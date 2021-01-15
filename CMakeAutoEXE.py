@@ -13,51 +13,45 @@ __version__ = "0.0.2"
 from CMakeAuto import CMakeAuto
 import os
 
-if __name__ == '__main__':
+class CMakeAutoEXE():
 
-    # Configuration
-    cmake_config = dict()
-    cmake_config['proj_name'] = 'okane_crypt'
-    cmake_config['proj_dir'] = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-    cmake_config['version'] = '0.01'
-    cmake_config['cmake_version'] = '3.15'
-    cmake_config['exclude_folders'] = ['tfm', 'port']
+    def __init__(self, **cmake_config):
 
-    # Creating instance
-    cm = CMakeAuto(**cmake_config)
+        # Creating instance
+        self.cm = CMakeAuto(**cmake_config)
 
-    # Recursively adding all source
-    cm.add_libraries(os.path.join(cmake_config['proj_dir'], 'src'))
-    cm.clear()
+    def run(self):
 
-    # Recursively adding all tests
-    cm.add_libraries(os.path.join(cmake_config['proj_dir'], 'tests'))
-    cm.clear()
+        # Recursively adding all source
+        self.cm.add_libraries(os.path.join(self.cm.proj_dir, 'src'))
+        self.cm.clear()
 
-    # Recursively adding all libs
-    cm.add_libraries(os.path.join(cmake_config['proj_dir'], 'libs'))
-    cm.clear()
+        # Recursively adding all tests
+        self.cm.add_libraries(os.path.join(self.cm.proj_dir, 'tests'))
+        self.cm.clear()
 
-    # Adding the compile config
-    cm.add("cmake_minimum_required(VERSION {})".format(cm.cmake_version))
-    cm.add("project({} VERSION {})".format(cm.proj_name, cm.version))
-    cm.add("set(CMAKE_CXX_STANDARD 11)")
-    cm.add('set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")\n')
+        # Recursively adding all libs
+        self.cm.add_libraries(os.path.join(self.cm.proj_dir, 'libs'))
+        self.cm.clear()
 
-    # Adding the executable
-    cm.add("add_executable(okane_crypt")
-    for source in cm.sources:
-        cm.add('    "{}"'.format(cm.get_posix_path(source)))
-    cm.add(")\n")
+        # Adding the compile config
+        self.cm.add("cmake_minimum_required(VERSION {})".format(self.cm.cmake_version))
+        self.cm.add("project({} VERSION {})".format(self.cm.proj_name, self.cm.version))
+        self.cm.add("set(CMAKE_CXX_STANDARD 11)")
+        self.cm.add('set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")\n')
 
-    # Setting executable properties
-    cm.add('set_target_properties(okane_crypt PROPERTIES COMPILE_FLAGS "-fPIC")')
-    cm.add('target_include_directories(okane_crypt PUBLIC "{}")'.format(cm.get_posix_path(cmake_config['proj_dir'])))
+        # Adding the executable
+        self.cm.add("add_executable({}".format(self.cm.proj_name))
+        for source in self.cm.sources:
+            self.cm.add('    "{}"'.format(self.cm.get_posix_path(source)))
+        self.cm.add(")\n")
 
-    # Writing main CMakeLists.txt
-    cm.write(cmake_config['proj_dir'])
+        # Setting executable properties
+        self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")'.format(self.cm.proj_name))
+        self.cm.add('target_include_directories({} PUBLIC "{}")'.format(self.cm.proj_name, self.cm.get_posix_path(self.cm.proj_dir)))
 
-
+        # Writing main CMakeLists.txt
+        self.cm.write(self.cm.proj_dir)
 
 
 
