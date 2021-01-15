@@ -21,4 +21,3 @@ cme.run()
 <h2> Contacts: </h2>
 
 - a22agarw@outlook.com
-- abhitrivedi@hotmail.com

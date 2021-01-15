@@ -6,10 +6,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3e2b2fd-a1e0-47a7-92bf-d62cb55f1248" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeAutoEXE.py" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeAutoEXE.py" afterDir="false" />
-    </list>
+    <list default="true" id="a3e2b2fd-a1e0-47a7-92bf-d62cb55f1248" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,7 +51,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1610691603997</updated>
-      <workItem from="1610691605373" duration="1127000" />
+      <workItem from="1610691605373" duration="1161000" />
     </task>
     <servers />
   </component>
