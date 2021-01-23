@@ -10,8 +10,9 @@ __author__ = "Anish Agarwal"
 __copyright__ = "Copyright 2020, Okane Labs"
 __version__ = "0.0.2"
 
-from CMakeAuto import CMakeAuto
 import os
+
+from .CMakeAuto import CMakeAuto
 
 class CMakeAutoEXE():
 
@@ -23,16 +24,9 @@ class CMakeAutoEXE():
     def run(self):
 
         # Recursively adding all source
-        self.cm.add_libraries(os.path.join(self.cm.proj_dir, 'src'))
-        self.cm.clear()
-
-        # Recursively adding all tests
-        self.cm.add_libraries(os.path.join(self.cm.proj_dir, 'tests'))
-        self.cm.clear()
-
-        # Recursively adding all libs
-        self.cm.add_libraries(os.path.join(self.cm.proj_dir, 'libs'))
-        self.cm.clear()
+        for _dir in self.cm.include_dirs:
+            self.cm.add_libraries(os.path.join(self.cm.proj_dir, _dir))
+            self.cm.clear()
 
         # Adding the compile config
         self.cm.add("cmake_minimum_required(VERSION {})".format(self.cm.cmake_version))

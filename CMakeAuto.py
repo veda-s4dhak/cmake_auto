@@ -12,7 +12,7 @@ __version__ = "0.0.2"
 
 import os
 import pathlib
-from CMakeIndexer import CMakeIndexer
+from .CMakeIndexer import CMakeIndexer
 
 class CMakeAuto(CMakeIndexer):
 
@@ -23,9 +23,9 @@ class CMakeAuto(CMakeIndexer):
         self.proj_name = kwargs['proj_name']
         self.version = kwargs['version']
         self.cmake_version = kwargs['cmake_version']
-        self.exclude_folders = kwargs['exclude_folders']
+        self.include_dirs = kwargs['include_dirs']
+        self.exclude_dirs = kwargs['exclude_dirs']
 
-        self.cmake = ''
 
         self.library_paths = []
         self.library_names = []
@@ -99,7 +99,7 @@ class CMakeAuto(CMakeIndexer):
 
         if (self.sub_dirs_exist(path)):
             for dir in self.get_sub_dirs(path):
-                if dir not in self.exclude_folders:
+                if dir not in self.exclude_dirs:
                     self.add_libraries(os.path.join(path,dir))
 
         self.add_library(path)
