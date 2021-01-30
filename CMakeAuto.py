@@ -116,5 +116,4 @@ class CMakeAuto(CMakeIndexer):
                 if not excluded:
                     self.add_libraries(os.path.join(path,dir))
 
-
         self.add_library(path)
