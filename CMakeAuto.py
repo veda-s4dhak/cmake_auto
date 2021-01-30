@@ -25,6 +25,7 @@ class CMakeAuto(CMakeIndexer):
         self.cmake_version = kwargs['cmake_version']
         self.include_dirs = kwargs['include_dirs']
         self.exclude_dirs = kwargs['exclude_dirs']
+        self.exclude_paths = kwargs['exclude_paths']
 
 
         self.library_paths = []
@@ -99,7 +100,21 @@ class CMakeAuto(CMakeIndexer):
 
         if (self.sub_dirs_exist(path)):
             for dir in self.get_sub_dirs(path):
-                if dir not in self.exclude_dirs:
+
+                lib_path = os.path.join(path,dir)
+
+                excluded = False
+                for exclude_dir in self.exclude_dirs:
+                    if exclude_dir in lib_path:
+                        excluded = True
+
+                if not excluded:
+                    for exclude_path in self.exclude_paths:
+                        if exclude_path in lib_path:
+                            excluded = True
+
+                if not excluded:
                     self.add_libraries(os.path.join(path,dir))
+
 
         self.add_library(path)
