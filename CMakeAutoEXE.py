@@ -42,7 +42,10 @@ class CMakeAutoEXE():
 
         # Setting executable properties
         self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")'.format(self.cm.proj_name))
-        self.cm.add('target_include_directories({} PUBLIC "{}")'.format(self.cm.proj_name, self.cm.get_posix_path(self.cm.proj_dir)))
+
+        # Adding include directories
+        for path in self.cm.library_paths:
+            self.cm.add('target_include_directories({} PUBLIC "{}")'.format(self.cm.proj_name, path))
 
         # Writing main CMakeLists.txt
         self.cm.write(self.cm.proj_dir)
