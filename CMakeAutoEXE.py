@@ -1,14 +1,12 @@
-"""
-Description: What's that? Its a bird, no its a plane, no its an Automatic CMake Generator!
+#!/usr/bin/env python
 
-Copyright (C) Okane Labs, Inc. - All rights reserved
-Unauthorized copying of this file, via any medium is strictly prohibited
-Proprietary and confidential
+"""
+Description: Generates an executable target
 """
 
 __author__ = "Anish Agarwal"
-__copyright__ = "Copyright 2020, Okane Labs"
-__version__ = "0.0.2"
+__license__ = "MIT"
+__version__ = "2021.03.01"
 
 import os
 
@@ -34,18 +32,30 @@ class CMakeAutoEXE():
         self.cm.add("set(CMAKE_CXX_STANDARD 11)")
         self.cm.add('set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")\n')
 
-        # Adding the executable
-        self.cm.add("add_executable({}".format(self.cm.proj_name))
+        # Set headers and sources
+        self.cm.add("set(SOURCES".format(self.cm.proj_name))
         for source in self.cm.sources:
             self.cm.add('    "{}"'.format(self.cm.get_posix_path(source)))
+        for headers in self.cm.headers:
+            self.cm.add('    "{}"'.format(self.cm.get_posix_path(headers)))
         self.cm.add(")\n")
 
+        # Adding the executable
+        self.cm.add("add_executable({} {})\n".format(self.cm.proj_name, r"${SOURCES}"))
+
         # Setting executable properties
-        self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")'.format(self.cm.proj_name))
+        self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")\n'.format(self.cm.proj_name))
+
+        # Adding include directories
+        for include in self.cm.includes:
+            if include not in self.cm.library_paths:
+                self.cm.add('target_include_directories({} PUBLIC "{}")'.format(self.cm.proj_name, include))
+        self.cm.add("")
 
         # Adding include directories
         for path in self.cm.library_paths:
             self.cm.add('target_include_directories({} PUBLIC "{}")'.format(self.cm.proj_name, path))
+        self.cm.add("")
 
         # Writing main CMakeLists.txt
         self.cm.write(self.cm.proj_dir)

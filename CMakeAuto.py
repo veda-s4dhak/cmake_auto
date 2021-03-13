@@ -1,14 +1,14 @@
-"""
-Description: What's that? Its a bird, no its a plane, no its an Automatic CMake Generator!
+#!/usr/bin/env python
 
-Copyright (C) Okane Labs, Inc. - All rights reserved
-Unauthorized copying of this file, via any medium is strictly prohibited
-Proprietary and confidential
+"""
+Description: Core module.
+
+Aside: I think therefore, im a G.
 """
 
 __author__ = "Anish Agarwal"
-__copyright__ = "Copyright 2020, Okane Labs"
-__version__ = "0.0.2"
+__license__ = "MIT"
+__version__ = "2021.03.01"
 
 import os
 import pathlib
@@ -30,7 +30,10 @@ class CMakeAuto(CMakeIndexer):
 
         self.library_paths = []
         self.library_names = []
+
         self.sources = []
+        self.headers = []
+        self.includes = []
 
     def clear(self):
 
@@ -55,6 +58,13 @@ class CMakeAuto(CMakeIndexer):
                 return True
         return False
 
+    def check_for_header(self, files):
+
+        for file in files:
+            if (".h" in file) or (".hpp" in file):
+                return True
+        return False
+
     def construct_lib(self, lib_path, lib_name, lib_files):
 
         self.clear()
@@ -75,6 +85,7 @@ class CMakeAuto(CMakeIndexer):
 
         files = self.get_files(path)
         contains_source = self.check_for_source(files)
+        contains_header = self.check_for_header(files)
 
         if (len(files) > 0) and (contains_source):
 
@@ -96,7 +107,20 @@ class CMakeAuto(CMakeIndexer):
             # Adding the library
             self.construct_lib(lib_path, lib_name, files)
 
+        if (len(files) > 0) and (contains_header):
+
+            # Adding include dirs
+            self.includes.append(self.get_posix_path(path))
+
+            # Adding the headers
+            for file in files:
+                if (".hpp" in file) or (".h" in file):
+                    self.headers.append(self.get_posix_path(os.path.join(path, file)))
+
     def add_libraries(self, path):
+
+        if "asn1" in path:
+            i = 0
 
         if (self.sub_dirs_exist(path)):
             for dir in self.get_sub_dirs(path):
@@ -105,7 +129,7 @@ class CMakeAuto(CMakeIndexer):
 
                 excluded = False
                 for exclude_dir in self.exclude_dirs:
-                    if exclude_dir in lib_path:
+                    if (exclude_dir in dir) and (len(exclude_dir) == len(dir)):
                         excluded = True
 
                 if not excluded:

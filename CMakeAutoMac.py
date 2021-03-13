@@ -1,5 +1,5 @@
 """
-Description: What's that? Its a bird, no its a plane, no its an Automatic CMake Generator!
+Description:
 
 Copyright (C) Okane Labs, Inc. - All rights reserved
 Unauthorized copying of this file, via any medium is strictly prohibited
