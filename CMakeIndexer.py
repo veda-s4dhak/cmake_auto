@@ -30,6 +30,7 @@ class CMakeIndexer():
         return next(os.walk(path))[1]
 
     def sub_dirs_exist(self, path):
+        print(path)
         return (len(next(os.walk(path))[1]) > 0)
 
     def index_dirs(self, path):
