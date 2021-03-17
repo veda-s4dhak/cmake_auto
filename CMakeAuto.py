@@ -129,12 +129,12 @@ class CMakeAuto(CMakeIndexer):
 
                 excluded = False
                 for exclude_dir in self.exclude_dirs:
-                    if (exclude_dir in dir) and (len(exclude_dir) == len(dir)):
+                    if exclude_dir == dir:
                         excluded = True
 
                 if not excluded:
                     for exclude_path in self.exclude_paths:
-                        if exclude_path in lib_path:
+                        if self.get_posix_path(exclude_path) in self.get_posix_path(lib_path):
                             excluded = True
 
                 if not excluded:
