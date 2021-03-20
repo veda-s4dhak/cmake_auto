@@ -58,7 +58,10 @@ class CMakeAutoEXE():
         self.cm.add("")
 
         # Writing main CMakeLists.txt
-        self.cm.write(self.cm.proj_dir)
+        cmake_build_path = self.cm.get_posix_path(os.path.join(self.cm.proj_dir, "cmake-build"))
+        if not os.path.exists(cmake_build_path):
+            os.makedirs(cmake_build_path)
+        self.cm.write(cmake_build_path)
 
 
 
