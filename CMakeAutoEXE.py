@@ -63,6 +63,8 @@ class CMakeAutoEXE():
             os.makedirs(cmake_build_path)
         self.cm.write(cmake_build_path)
 
+        raise RuntimeError("RunTimeError")
+
 
 
 
