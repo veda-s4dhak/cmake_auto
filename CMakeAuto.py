@@ -3,7 +3,7 @@
 """
 Description: Core module.
 
-Aside: I think therefore, im a G.
+Aside: I think therefore, I am a G.
 """
 
 __author__ = "Anish Agarwal"

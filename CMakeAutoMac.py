@@ -1,14 +1,14 @@
-"""
-Description:
+#!/usr/bin/env python
 
-Copyright (C) Okane Labs, Inc. - All rights reserved
-Unauthorized copying of this file, via any medium is strictly prohibited
-Proprietary and confidential
+"""
+Description: Builds a mac shared/static library.
+
+Aside: GG.
 """
 
 __author__ = "Anish Agarwal"
-__copyright__ = "Copyright 2020, Okane Labs"
-__version__ = "0.0.2"
+__license__ = "MIT"
+__version__ = "2021.03.01"
 
 from CMakeAuto import CMakeAuto
 import os
