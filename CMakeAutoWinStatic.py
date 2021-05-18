@@ -21,7 +21,6 @@ class CMakeAutoWinStatic():
 
     def run(self):
 
-
         # Recursively adding all source
         for _dir in self.cm.include_dirs:
             self.cm.add_libraries(os.path.join(self.cm.proj_dir, _dir))
@@ -44,8 +43,8 @@ class CMakeAutoWinStatic():
         # Adding the shared lib
         self.cm.add("add_library({} STATIC {})\n".format(self.cm.proj_name, r"${SOURCES}"))
 
-        # Setting shared lib properties
-        self.cm.add('set_target_properties(okane_crypt PROPERTIES COMPILE_FLAGS "-fPIC")')
+        # Setting static lib properties
+        self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")'.format(self.cm.proj_name))
 
         # Adding include directories
         for include in self.cm.includes:
@@ -59,4 +58,7 @@ class CMakeAutoWinStatic():
         self.cm.add("")
 
         # Writing main CMakeLists.txt
-        self.cm.write(self.cm.proj_dir)
+        cmake_build_path = self.cm.get_posix_path(os.path.join(self.cm.proj_dir, "cmake-build-debug"))
+        if not os.path.exists(cmake_build_path):
+            os.makedirs(cmake_build_path)
+        self.cm.write(cmake_build_path)
