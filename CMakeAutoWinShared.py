@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Description: Generates a windows static library
+Description: Generates a windows shared library
 """
 
 __author__ = "Anish Agarwal"
@@ -12,12 +12,14 @@ import os
 
 from .CMakeAuto import CMakeAuto
 
-class CMakeAutoWinStatic():
+class CMakeAutoWinShared():
 
     def __init__(self, **cmake_config):
 
         # Creating instance
         self.cm = CMakeAuto(**cmake_config)
+        self.jni_dir = cmake_config["jni_dir"]
+        self.libs = cmake_config["libs"]
 
     def run(self):
 
@@ -32,6 +34,9 @@ class CMakeAutoWinStatic():
         self.cm.add("set(CMAKE_CXX_STANDARD 11)")
         self.cm.add('set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")\n')
 
+        # Setting flags
+        self.cm.add('SET_PROPERTY(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)\n')
+
         # Set headers and sources
         self.cm.add("set(SOURCES".format(self.cm.proj_name))
         for source in self.cm.sources:
@@ -41,10 +46,20 @@ class CMakeAutoWinStatic():
         self.cm.add(")\n")
 
         # Adding the shared lib
-        self.cm.add("add_library({} STATIC {})\n".format(self.cm.proj_name, r"${SOURCES}"))
+        self.cm.add("add_library({} SHARED {})\n".format(self.cm.proj_name, r"${SOURCES}"))
 
-        # Setting static lib properties
-        self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")'.format(self.cm.proj_name))
+        # Add JNI libs
+        self.cm.add('include_directories("{}/include")'.format(self.jni_dir))
+        self.cm.add('link_directories("{}/include")'.format(self.jni_dir))
+        self.cm.add('include_directories("{}/include/win32")'.format(self.jni_dir))
+        self.cm.add('link_directories("{}/include/win32")\n'.format(self.jni_dir))
+
+        # Setting shared lib properties
+        self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")\n'.format(self.cm.proj_name))
+
+        # Static linkage of okane-crypt is required for successful Windows DLL creation.
+        for lib in self.libs:
+            self.cm.add('target_link_libraries({} {})\n'.format(self.cm.proj_name, self.cm.get_posix_path(lib)))
 
         # Adding include directories
         for include in self.cm.includes:
