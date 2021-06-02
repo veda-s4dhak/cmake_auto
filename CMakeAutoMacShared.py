@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Description: Generates a windows shared library
+Description: Generates a macosx shared library
 """
 
 __author__ = "Anish Agarwal"
@@ -12,7 +12,7 @@ import os
 
 from .CMakeAuto import CMakeAuto
 
-class CMakeAutoWinShared():
+class CMakeAutoMacShared():
 
     def __init__(self, **cmake_config):
 
