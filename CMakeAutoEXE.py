@@ -44,6 +44,7 @@ class CMakeAutoEXE():
         self.cm.add("add_executable({} {})\n".format(self.cm.proj_name, r"${SOURCES}"))
 
         # Setting executable properties
+        self.cm.add('target_compile_definitions({} PUBLIC OC_MODE_TEST)'.format(self.cm.proj_name))
         self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")\n'.format(self.cm.proj_name))
 
         # Adding include directories
