@@ -19,6 +19,9 @@ class CMakeAutoEXE():
         # Creating instance
         self.cm = CMakeAuto(**cmake_config)
 
+        # Setting flags
+        self.flags = cmake_config["flags"]
+
     def run(self):
 
         # Recursively adding all source
@@ -42,6 +45,12 @@ class CMakeAutoEXE():
 
         # Adding the executable
         self.cm.add("add_executable({} {})\n".format(self.cm.proj_name, r"${SOURCES}"))
+
+        # Setting flags
+        self.cm.add("target_compile_definitions({} PUBLIC".format(self.cm.proj_name))
+        for flag in self.flags:
+            self.cm.add('    "{}"'.format(flag))
+        self.cm.add(")\n")
 
         # Setting executable properties
         self.cm.add('target_compile_definitions({} PUBLIC OC_MODE_TEST)'.format(self.cm.proj_name))
