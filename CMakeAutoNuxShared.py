@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Description: Generates a macosx shared library
+Description: Generates a nux shared library
 """
 
 __author__ = "Anish Agarwal"
@@ -12,7 +12,7 @@ import os
 
 from .CMakeAuto import CMakeAuto
 
-class CMakeAutoMacShared():
+class CMakeAutoNuxShared():
 
     def __init__(self, **cmake_config):
 
@@ -56,8 +56,8 @@ class CMakeAutoMacShared():
         if self.jni_dir:
             self.cm.add('include_directories("{}/include")'.format(self.jni_dir))
             self.cm.add('link_directories("{}/include")'.format(self.jni_dir))
-            self.cm.add('include_directories("{}/include/darwin")'.format(self.jni_dir))
-            self.cm.add('link_directories("{}/include/darwin")\n'.format(self.jni_dir))
+            self.cm.add('include_directories("{}/include/nux")'.format(self.jni_dir))
+            self.cm.add('link_directories("{}/include/nux")\n'.format(self.jni_dir))
 
         # Setting shared lib properties
         self.cm.add('set_target_properties({} PROPERTIES COMPILE_FLAGS "-fPIC")\n'.format(self.cm.proj_name))
