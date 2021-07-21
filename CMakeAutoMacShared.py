@@ -20,6 +20,9 @@ class CMakeAutoMacShared():
         self.cm = CMakeAuto(**cmake_config)
         self.libs = cmake_config["libs"]
 
+        # Setting flags
+        self.flags = cmake_config["flags"]
+
         if "jni_dir" in cmake_config.keys():
             self.jni_dir = cmake_config["jni_dir"]
         else:
@@ -51,6 +54,12 @@ class CMakeAutoMacShared():
 
         # Adding the shared lib
         self.cm.add("add_library({} SHARED {})\n".format(self.cm.proj_name, r"${SOURCES}"))
+
+        # Setting flags
+        self.cm.add("target_compile_definitions({} PUBLIC".format(self.cm.proj_name))
+        for flag in self.flags:
+            self.cm.add('    "{}"'.format(flag))
+        self.cm.add(")\n")
 
         # Add JNI libs
         if self.jni_dir:
